@@ -53,8 +53,8 @@ import org.apache.zookeeper.ZooKeeper;
 import org.apache.zookeeper.ZooKeeper.States;
 import org.apache.zookeeper.data.ACL;
 import org.apache.zookeeper.data.Stat;
-import org.apache.zookeeper.inspector.encryption.BasicDataEncryptionManager;
 import org.apache.zookeeper.inspector.encryption.DataEncryptionManager;
+import org.apache.zookeeper.inspector.encryption.HelixCompressedZnodeEncryptionManager;
 import org.apache.zookeeper.inspector.logger.LoggerFactory;
 import org.apache.zookeeper.inspector.manager.ZooInspectorManagerCache.Item;
 import org.apache.zookeeper.retry.ZooKeeperRetry;
@@ -158,7 +158,7 @@ public class ZooInspectorManagerImpl implements ZooInspectorManager
         }
         if (encryptionManager == null)
         {
-          this.encryptionManager = new BasicDataEncryptionManager();
+            this.encryptionManager = new HelixCompressedZnodeEncryptionManager();
         }
         else
         {
@@ -1041,7 +1041,7 @@ public class ZooInspectorManagerImpl implements ZooInspectorManager
       }
       defaultEncryptionManager =
           props.getProperty(DATA_ENCRYPTION_MANAGER) == null
-              ? "org.apache.zookeeper.inspector.encryption.BasicDataEncryptionManager"
+              ? "org.apache.zookeeper.inspector.encryption.HelixCompressedZnodeEncryptionManager"
               : props.getProperty(DATA_ENCRYPTION_MANAGER);
       defaultTimeout =
           props.getProperty(SESSION_TIMEOUT) == null ? "30000"
@@ -1053,7 +1053,7 @@ public class ZooInspectorManagerImpl implements ZooInspectorManager
     else
     {
       defaultEncryptionManager =
-          "org.apache.zookeeper.inspector.encryption.BasicDataEncryptionManager";
+          "org.apache.zookeeper.inspector.encryption.HelixCompressedZnodeEncryptionManager";
       defaultTimeout = "30000";
       defaultHosts = "localhost:2181";
     }
