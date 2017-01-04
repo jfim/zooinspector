@@ -394,9 +394,7 @@ public class ZooInspectorManagerImpl implements ZooInspectorManager
       }
       catch (Exception e)
       {
-        LoggerFactory.getLogger().error("Error occurred getting data for node: "
-                                            + nodePath,
-                                        e);
+        LoggerFactory.getLogger().error("Error occurred getting data for node: " + nodePath, e);
       }
     }
     return null;
@@ -893,6 +891,13 @@ public class ZooInspectorManagerImpl implements ZooInspectorManager
         }
       }
     }
+  }
+
+  public Properties getConnectionProperties(String host) {
+    Properties p = new Properties();
+    p.setProperty(CONNECT_STRING, host);
+    p.setProperty(SESSION_TIMEOUT, "30000");
+    return p;
   }
 
   /**

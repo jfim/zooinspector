@@ -23,14 +23,12 @@ import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import javax.swing.UIManager;
-
 import org.apache.zookeeper.inspector.gui.ZooInspectorPanel;
 import org.apache.zookeeper.inspector.logger.LoggerFactory;
 import org.apache.zookeeper.inspector.manager.ZooInspectorManagerImpl;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.UIManager;
 
 /**
  *
@@ -57,20 +55,24 @@ public class ZooInspector {
 //            frame.setSize(screenWidth * 2 / 3, screenHeight);
 //            frame.setVisible(true);
 
-            final ZooInspectorPanel zooInspectorPanel = new ZooInspectorPanel(
-                    new ZooInspectorManagerImpl());
+          ZooInspectorManagerImpl mgr = new ZooInspectorManagerImpl();
+            final ZooInspectorPanel zooInspectorPanel = new ZooInspectorPanel(mgr);
             frame.addWindowListener(new WindowAdapter() {
-                @Override
-                public void windowClosed(WindowEvent e) {
-                    super.windowClosed(e);
-                    zooInspectorPanel.disconnect(true);
-                }
+              @Override
+              public void windowClosed(WindowEvent e) {
+                super.windowClosed(e);
+                zooInspectorPanel.disconnect(true);
+              }
             });
 
             frame.setContentPane(zooInspectorPanel);
             frame.setSize(1024, 768);
 //            frame.setSize(screenWidth * 2 / 3, screenHeight);
             frame.setVisible(true);
+            if (args.length >= 1) {
+              System.out.println("Connecting to " + args[0]);
+              zooInspectorPanel.connect(mgr.getConnectionProperties(args[0]));
+            }
         } catch (Exception e) {
             LoggerFactory.getLogger().error(
                     "Error occurred loading ZooInspector", e);
